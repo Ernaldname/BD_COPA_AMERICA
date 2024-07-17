@@ -1,0 +1,48 @@
+CREATE TABLE Teams (
+    TeamID INT PRIMARY KEY,
+    TeamName VARCHAR(100) NOT NULL,
+    Country VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Players (
+    PlayerID INT PRIMARY KEY,
+    TeamID INT,
+    PlayerName VARCHAR(100) NOT NULL,
+    Position VARCHAR(50),
+    FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
+);
+
+CREATE TABLE Matches (
+    MatchID INT PRIMARY KEY,
+    Date DATE NOT NULL,
+    Venue VARCHAR(100) NOT NULL,
+    TeamAID INT,
+    TeamBID INT,
+    ScoreA INT,
+    ScoreB INT,
+    FOREIGN KEY (TeamAID) REFERENCES Teams(TeamID),
+    FOREIGN KEY (TeamBID) REFERENCES Teams(TeamID)
+);
+
+CREATE TABLE Goals (
+    GoalID INT PRIMARY KEY,
+    MatchID INT,
+    ScoringTeamID INT,
+    PlayerID INT,
+    TimeScored TIME NOT NULL,
+    FOREIGN KEY (MatchID) REFERENCES Matches(MatchID),
+    FOREIGN KEY (ScoringTeamID) REFERENCES Teams(TeamID),
+    FOREIGN KEY (PlayerID) REFERENCES Players(PlayerID)
+);
+
+CREATE TABLE Standings (
+    TeamID INT,
+    MatchesPlayed INT DEFAULT 0,
+    MatchesWon INT DEFAULT 0,
+    MatchesDrawn INT DEFAULT 0,
+    MatchesLost INT DEFAULT 0,
+    GoalsFor INT DEFAULT 0,
+    GoalsAgainst INT DEFAULT 0,
+    Points INT DEFAULT 0,
+    FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
+);
